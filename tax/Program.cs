@@ -22,7 +22,7 @@ namespace tax
 
                 if(i>0){
                     
-                cumulativeTax[i] = taxRate[i] * .01 * (brackets[i + 1] - brackets[i]) + cumulativeTax[i];
+                cumulativeTax[i] = taxRate[i-1] * .01 * (brackets[i] - brackets[i-1]) + cumulativeTax[i-1];
                     
                 }
 
