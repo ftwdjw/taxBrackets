@@ -26,22 +26,36 @@ namespace tax
 
             cumulativeTax[0] = 0.0;
 
+            outputArray[0] = "tax rate in %, tax bracket, cumulative tax";
+
 
             //generate cumulative tax table and save to output array for csv file
 
             for ( i = 0; i < taxRate.Length ;i++){
+
+
 
                 if(i>0){
                     
                 cumulativeTax[i] = taxRate[i-1] * .01 * (brackets[i] - brackets[i-1]) 
                                                   + cumulativeTax[i-1];
                     
+                    /*outputArray[i] = string.Format("{0:#}%,${1:#} to ${2:#},${3:#}",
+                                              taxRate[i], brackets[i],
+                                              brackets[i + 1], cumulativeTax[i]);*/
+                    
                 }
 
                 
-                outputArray[i] = taxRate[i].ToString() + ","
+                /*outputArray[i] = taxRate[i].ToString() + ","
                                    + brackets[i].ToString() + ","
-                                   + cumulativeTax[i].ToString();
+                                   + cumulativeTax[i].ToString();*/
+
+
+                outputArray[i+1] = string.Format("{0:#}%,${1:#} to ${2:#},${3:#}", 
+                                               taxRate[i],brackets[i], 
+                                               brackets[i+1],cumulativeTax[i]);
+                
             }
 
 
@@ -79,16 +93,15 @@ namespace tax
 
 
                 
-            outputArray[taxRate.Length + 1] = "income" + "," + income.ToString() ;
+            outputArray[taxRate.Length + 1] = "income" + "," + string.Format("${0:#}", income) ;
 
-            outputArray[taxRate.Length + 2] = "tax bracket" + ","
-                + brackets[saveBracket].ToString() + "to" 
-                                       + brackets[saveBracket + 1].ToString();
+            outputArray[taxRate.Length + 2] = "tax bracket" + "," +
+                string.Format("${0:#} to ${1:#}", brackets[saveBracket],brackets[saveBracket + 1]);
 
-            outputArray[taxRate.Length + 3] = "tax Rate" + "," 
-                + taxRate[saveBracket].ToString();
+            outputArray[taxRate.Length + 3] = "tax Rate in %" + "," 
+                + string.Format("{0:#}%", taxRate[saveBracket]);
 
-            outputArray[taxRate.Length + 4] = "tax " + "," + tax.ToString();
+            outputArray[taxRate.Length + 4] = "tax " + "," + string.Format("${0:#}", tax);
 
 
             File.WriteAllLines("tax.csv",outputArray);
